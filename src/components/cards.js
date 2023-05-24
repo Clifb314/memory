@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CardDB from "./cardDB";
-
+import scoreBoard from "./score";
 
 const DisplayCards = () => {
     //array of what player picked already
@@ -9,7 +9,7 @@ const DisplayCards = () => {
     const [best, setBest] = useState(0)
     const [rands, setRands] = useState([])
 
-
+    //I think useEffect could help here. Tie it to change in score?
     const genRands = () => {
         let list = []
 
@@ -24,7 +24,7 @@ const DisplayCards = () => {
 
         let picks = list.map(pic => {
             return (
-                <CardDB index={pic} />
+                <CardDB index={pic} onClick={handleClick} />
             )
         })
 
@@ -38,14 +38,24 @@ const DisplayCards = () => {
             setScore(score + 1)
         } else {
             //trigger loss
+            handleLoss()
         }
+        //regen cards
+    }
 
+    const handleLoss = () => {
+        if (score > best) {
+            setBest(score)
+        }
+        setScore(0)
     }
 
 
     return (
-        <div className="card">
-
+        <div class="game">
+            <scoreBoard score={score} best={best} />
+            <div className="card">
+            </div>
         </div>
     )
 }
